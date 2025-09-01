@@ -140,15 +140,43 @@ id_10682465326 ERROR : WordPress upload failed
 
 - Flickr json prop `.original` has already included the orignal photo public links so we can offer the feature to download these links direclty, and users do not need to point out the path on the host to the original-photos directory.
 
-## Still To Be Defined
+### Command Options & Behavior
 
-The following items need further specification:
+#### --dry-run
+- **Behavior:** Simulate the import process without making any changes to WordPress
+- **Output:** Show what would be imported, created, or skipped
+- **Logging:** Still create log file but prefix entries with "DRY-RUN:"
+- **Validation:** Still validate directories and file matching
 
-1. **Command Options & Behavior**
-   - Default behavior for `--dry-run`, `--verbose`, `--skip-existing`
-   - Validation rules for directory paths
+#### --verbose
+- **Behavior:** Provide detailed output during processing
+- **Output:** Show progress for each photo, EXIF processing details, file matching steps
+- **Normal mode:** Only show summaries and errors
+- **Verbose mode:** Show each step: "Processing photo_123.json → found image_123.jpg → creating post → assigning tags"
 
-2. **Performance Considerations**
-   - Batch processing limits (how many photos at once?)
-   - Memory usage limits for large datasets
-   - Progress reporting for long-running imports 
+#### --skip-existing
+- **Behavior:** Skip processing if WordPress already has content with matching criteria
+- **Detection:** Check for existing posts with same photo ID in post meta or similar identifier
+- **Different from duplicate handling:** This is for re-running the command, not duplicate files
+
+#### Directory Path Validation
+- **json-dir:** Must exist, must be readable, must contain JSON files
+- **photos-dir:** Must exist, must be readable, must contain image files
+- **Both required:** Command fails if either directory is missing or inaccessible
+
+### Performance Considerations
+
+#### Batch Processing Limits
+- **Default:** Process 50 photos per batch to prevent memory issues
+- **Configurable:** Allow `--batch-size=N` option
+- **Memory management:** Clear processed data between batches
+
+#### Memory Usage
+- **JSON parsing:** Load and process one JSON file at a time, don't load all into memory
+- **Image processing:** Let WordPress handle image processing, don't load images into PHP memory
+- **EXIF data:** Use only the EXIF data provided in `photo_[id].json` file's `exif` field. If no EXIF data exists in JSON, skip adding EXIF info entirely. Do not attempt to parse EXIF from image files.
+
+#### Progress Reporting
+- **Console output:** Show "Processing X of Y photos (Z%)"
+- **Time estimates:** Show elapsed time and ETA
+- **Summary at end:** Total processed, succeeded, failed, skipped 
