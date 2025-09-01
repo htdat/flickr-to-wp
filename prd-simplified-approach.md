@@ -252,7 +252,7 @@ php flickr-to-wordpress-xml.php \
 ## Development Environment
 
 ### Requirements
-- **PHP 7.4+** with XML extensions
+- **PHP 8.3+** with XML extensions
 - **Internet connection** for validating Flickr URLs (optional)
 - **No WordPress installation needed** for XML generation
 - **File system access** to Flickr JSON directory only
