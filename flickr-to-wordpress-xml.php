@@ -148,8 +148,23 @@ XML;
     
     private function processTags(array $albums): void
     {
-        $this->log("Processing album tags...");
+        $this->log("Processing tags and categories...");
         
+        // Add the main "From Flickr" category
+        $flickrCategoryId = $this->termIdCounter++;
+        $flickrCategoryXML = <<<XML
+    <wp:category>
+        <wp:term_id>{$flickrCategoryId}</wp:term_id>
+        <wp:category_nicename><![CDATA[from-flickr]]></wp:category_nicename>
+        <wp:category_name><![CDATA[From Flickr]]></wp:category_name>
+        <wp:category_description><![CDATA[Photos imported from Flickr]]></wp:category_description>
+        <wp:category_parent><![CDATA[]]></wp:category_parent>
+    </wp:category>
+
+XML;
+        $this->writeXML($flickrCategoryXML);
+        
+        // Process albums as tags
         foreach ($albums as $album) {
             $tagId = $this->termIdCounter++;
             $tagName = $album['title'];
@@ -176,19 +191,6 @@ XML;
             $this->verbose("Created tag: {$tagName} ({$tagSlug})");
         }
         
-        // Add the flickr-to-wp tag
-        $flickrTagId = $this->termIdCounter++;
-        $flickrTagXML = <<<XML
-    <wp:tag>
-        <wp:term_id>{$flickrTagId}</wp:term_id>
-        <wp:tag_slug><![CDATA[flickr-to-wp]]></wp:tag_slug>
-        <wp:tag_name><![CDATA[flickr-to-wp]]></wp:tag_name>
-        <wp:term_description><![CDATA[Imported from Flickr]]></wp:term_description>
-    </wp:tag>
-
-XML;
-        
-        $this->writeXML($flickrTagXML);
         $this->log(sprintf("Created %d album tags", count($albums)));
     }
     
@@ -274,7 +276,7 @@ XML;
         <wp:post_password><![CDATA[]]></wp:post_password>
         <wp:is_sticky>0</wp:is_sticky>
         
-        <category domain="post_tag" nicename="flickr-to-wp"><![CDATA[flickr-to-wp]]></category>
+        <category domain="category" nicename="from-flickr"><![CDATA[From Flickr]]></category>
 
 XML;
 
@@ -301,7 +303,7 @@ XML;
         $this->writeXML($postXML);
         $this->verbose("Created post: {$postTitle}");
     }
-    
+
     private function writeAttachment(int $attachmentId, array $photo, int $parentId, string $postDate, string $postDateGMT): void
     {
         $attachmentSlug = $this->generateSlug($photo['name'] ?: 'photo-' . $photo['id']);
