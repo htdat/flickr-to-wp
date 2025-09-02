@@ -240,7 +240,7 @@ XML;
         $postTitle = $photo['name'] ?: "Photo taken at " . $photo['date_taken'];
         $postSlug = $this->generateSlug($postTitle);
         
-        $postContent = $this->generatePostContent($photo);
+        $postContent = $this->generatePostContent($photo, $attachmentId);
         $postDate = $this->formatDate($photo['date_imported'] ?: $photo['date_taken']);
         $postDateGMT = $this->formatDateGMT($photo['date_imported'] ?: $photo['date_taken']);
         
@@ -269,7 +269,7 @@ XML;
         <wp:comment_status><![CDATA[open]]></wp:comment_status>
         <wp:ping_status><![CDATA[open]]></wp:ping_status>
         <wp:post_name><![CDATA[{$postSlug}]]></wp:post_name>
-        <wp:status><![CDATA[publish]]></wp:status>
+        <wp:status><![CDATA[private]]></wp:status>
         <wp:post_parent>0</wp:post_parent>
         <wp:menu_order>0</wp:menu_order>
         <wp:post_type><![CDATA[post]]></wp:post_type>
@@ -289,13 +289,7 @@ XML;
             }
         }
         
-        // Add featured image meta
         $postXML .= <<<XML
-        
-        <wp:postmeta>
-            <wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key>
-            <wp:meta_value><![CDATA[{$attachmentId}]]></wp:meta_value>
-        </wp:postmeta>
     </item>
 
 XML;
@@ -345,18 +339,43 @@ XML;
         $this->writeXML($attachmentXML);
     }
     
-    private function generatePostContent(array $photo): string
+    private function generatePostContent(array $photo, int $attachmentId): string
     {
+        $attachmentUrl = $photo['original'];
+        $photoDescription = $photo['description'] ?? '';
+        $dateTaken = $photo['date_taken'];
+        $photopage = $photo['photopage'];
+        
+        // Generate WordPress Gutenberg blocks
         $content = [];
         
-        if (!empty($photo['description'])) {
-            $content[] = $photo['description'];
+        // Image block
+        $imageCaption = !empty($photoDescription) ? htmlspecialchars($photoDescription, ENT_QUOTES, 'UTF-8') : '';
+        $content[] = "<!-- wp:image {\"id\":{$attachmentId},\"sizeSlug\":\"large\",\"linkDestination\":\"none\"} -->";
+        $content[] = "<figure class=\"wp-block-image size-large\"><img src=\"{$attachmentUrl}\" alt=\"\" class=\"wp-image-{$attachmentId}\"/><figcaption class=\"wp-element-caption\">{$imageCaption}</figcaption></figure>";
+        $content[] = "<!-- /wp:image -->";
+        $content[] = "";
+        
+        // Additional description paragraph (if different from caption or if we need more detail)
+        if (!empty($photoDescription)) {
+            $content[] = "<!-- wp:paragraph -->";
+            $content[] = "<p></p>";
+            $content[] = "<!-- /wp:paragraph -->";
+            $content[] = "";
         }
         
-        $content[] = "Taken on " . $photo['date_taken'];
-        $content[] = "Originally from: " . $photo['photopage'];
+        // Date taken paragraph
+        $content[] = "<!-- wp:paragraph -->";
+        $content[] = "<p>Taken on {$dateTaken}</p>";
+        $content[] = "<!-- /wp:paragraph -->";
+        $content[] = "";
         
-        return implode("\n\n", $content);
+        // Original Flickr URL paragraph
+        $content[] = "<!-- wp:paragraph -->";
+        $content[] = "<p>Originally from: <a href=\"{$photopage}\">{$photopage}</a></p>";
+        $content[] = "<!-- /wp:paragraph -->";
+        
+        return implode("\n", $content);
     }
     
     private function formatEXIFData(array $exif): string

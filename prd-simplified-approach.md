@@ -59,7 +59,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
     <wp:comment_status><![CDATA[open]]></wp:comment_status>
     <wp:ping_status><![CDATA[open]]></wp:ping_status>
     <wp:post_name><![CDATA[[post-slug]]]></wp:post_name>
-    <wp:status><![CDATA[publish]]></wp:status>
+    <wp:status><![CDATA[private]]></wp:status>
     <wp:post_parent>0</wp:post_parent>
     <wp:menu_order>0</wp:menu_order>
     <wp:post_type><![CDATA[post]]></wp:post_type>
@@ -71,24 +71,36 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
     
     <!-- Category assignment -->
     <category domain="category" nicename="from-flickr"><![CDATA[From Flickr]]></category>
-    
-    <!-- Featured image reference -->
-    <wp:postmeta>
-        <wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key>
-        <wp:meta_value><![CDATA[[attachment_id]]]></wp:meta_value>
-    </wp:postmeta>
 </item>
 ```
 
 **Post Data Mapping:**
 - **Post Title:** Use photo `name` field, fallback to "Photo taken at [date_taken]"
-- **Post Content:** 
-  - Start with photo `description` if available
-  - Add "Taken on [date_taken]"
-  - Add "Originally from: [photopage]"
+- **Post Content:** WordPress Gutenberg blocks format including:
+  - **Image block:** Reference the attachment using its ID with photo description as caption
+  - **Paragraph blocks:** For photo description, date taken, and original Flickr URL
+  - **Content structure example:**
+```html
+<content:encoded><![CDATA[<!-- wp:image {"id":[attachment_id],"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="[attachment_url]" alt="" class="wp-image-[attachment_id]"/><figcaption class="wp-element-caption">[photo_description]</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>[photo_description_if_different_from_caption]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Taken on [date_taken]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Originally from: <a href="[photopage_url]">[photopage_url]</a></p>
+<!-- /wp:paragraph -->]]></content:encoded>
+```
 - **Post Date:** Use `date_imported` (actual Flickr publication date), fallback to `date_taken`
-- **Post Status:** `publish`
+- **Post Status:** `private` (allows admin review before publishing)
 - **Post Slug:** Generate from title or photo ID
+- **No Featured Image:** Image is embedded in content, not as featured image
 
 ### Photo Attachments → WordPress Media
 
@@ -229,10 +241,12 @@ php flickr-to-wordpress-xml.php \
 8. **Run the import**
 
 ### Step 4: Verification
-- Check that posts were created with correct dates
-- Verify featured images are attached
+- Check that posts were created with correct dates and `private` status
+- Verify images are embedded in post content as WordPress blocks
+- Confirm attachments were created and linked properly
 - Confirm tags were created and assigned
 - Review any import warnings/errors
+- Publish posts individually after review
 
 ## Performance Considerations
 
