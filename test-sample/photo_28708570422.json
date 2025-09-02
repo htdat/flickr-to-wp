@@ -1,0 +1,93 @@
+{
+	"id": "28708570422",
+	"name": "Hue it is.",
+	"description": "\u202a#\u200elivingDanang\u202c and nearby\n\nBeach Bar - Thuan An Beach",
+	"count_views": "63",
+	"count_faves": "0",
+	"count_comments": "0",
+	"date_taken": "2016-07-16 13:36:57",
+	"count_tags": "0",
+	"count_notes": "0",
+	"rotation": 0,
+	"date_imported": "2016-08-06 18:01:02",
+	"photopage": "https://www.flickr.com/photos/tiendathoang/28708570422/",
+	"original": "https://live.staticflickr.com/8579/28708570422_fcf222bf46_o.jpg",
+	"license": "All Rights Reserved",
+	"exif": {
+		"GPSVersionID": "2.2.0.0",
+		"GPSDateStamp": "2016:07:16",
+		"GPSAltitudeRef": "Below Sea Level",
+		"GPSLongitude": "107 deg 40' 37.95\" E",
+		"GPSProcessingMethod": "GPS",
+		"GPSTimeStamp": "06:37:09",
+		"GPSAltitude": "24 m",
+		"GPSLatitude": "16 deg 32' 45.24\" N",
+		"ImageDescription": "Jpeg",
+		"Orientation": "Horizontal (normal)",
+		"ModifyDate": "2016:07:16 13:36:57",
+		"ImageWidth": "320",
+		"YCbCrPositioning": "Centered",
+		"ImageHeight": "240",
+		"YResolution": "72 dpi",
+		"Software": "Android",
+		"XResolution": "72 dpi",
+		"ColorSpace": "sRGB",
+		"CreateDate": "2016:07:16 13:36:57",
+		"FNumber": "f/2.0",
+		"FocalLength": "3.8 mm",
+		"LightSource": "Unknown",
+		"ExposureMode": "Auto",
+		"SubSecTimeDigitized": "799",
+		"MaxApertureValue": "2.0",
+		"SceneCaptureType": "Standard",
+		"SubSecTimeOriginal": "799",
+		"DigitalZoomRatio": "1",
+		"Saturation": "Normal",
+		"ExposureProgram": "Program AE",
+		"Sharpness": "Normal",
+		"WhiteBalance": "Auto",
+		"SubSecTime": "799",
+		"MeteringMode": "Center-weighted average",
+		"DateTimeOriginal": "2016:07:16 13:36:57",
+		"GainControl": "None",
+		"SubjectDistance": "0 m",
+		"Flash": "No Flash",
+		"Contrast": "Normal",
+		"ExposureCompensation": "0 EV",
+		"BrightnessValue": "undef",
+		"ISO": "50",
+		"ExposureTime": "1/2500 sec",
+		"Compression": "JPEG (old-style)"
+	},
+	"groups": [
+
+	],
+	"albums": [
+		{
+			"id": "72157669084548603",
+			"title": "#livingDanang 2016",
+			"url": "https://www.flickr.com/photos/tiendathoang/sets/72157669084548603/"
+		}
+	],
+	"tags": [
+
+	],
+	"people": [
+
+	],
+	"notes": [
+
+	],
+	"privacy": "public",
+	"comment_permissions": "any flickr member",
+	"tagging_permissions": "people you follow",
+	"safety": "safe",
+	"comments": [
+
+	],
+	"geo": {
+		"latitude": "16545900",
+		"longitude": "107677208",
+		"accuracy": "16"
+	}
+}

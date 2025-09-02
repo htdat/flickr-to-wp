@@ -1,0 +1,93 @@
+{
+	"id": "28198606453",
+	"name": "Humble speakers",
+	"description": "#livingDanang\nSunset + jogging + music. ",
+	"count_views": "60",
+	"count_faves": "0",
+	"count_comments": "0",
+	"date_taken": "2016-07-11 18:03:37",
+	"count_tags": "0",
+	"count_notes": "0",
+	"rotation": 90,
+	"date_imported": "2016-08-06 18:01:04",
+	"photopage": "https://www.flickr.com/photos/tiendathoang/28198606453/",
+	"original": "https://live.staticflickr.com/8583/28198606453_c48a5e6ae6_o.jpg",
+	"license": "All Rights Reserved",
+	"exif": {
+		"GPSVersionID": "2.2.0.0",
+		"GPSDateStamp": "2016:07:11",
+		"GPSAltitudeRef": "Above Sea Level",
+		"GPSLongitude": "108 deg 13' 29.03\" E",
+		"GPSProcessingMethod": "GPS",
+		"GPSTimeStamp": "11:03:59",
+		"GPSAltitude": "41 m",
+		"GPSLatitude": "16 deg 4' 25.68\" N",
+		"ImageDescription": "Jpeg",
+		"Orientation": "Rotate 90 CW",
+		"ModifyDate": "2016:07:11 18:03:37",
+		"ImageWidth": "320",
+		"YCbCrPositioning": "Centered",
+		"ImageHeight": "240",
+		"YResolution": "72 dpi",
+		"Software": "Android",
+		"XResolution": "72 dpi",
+		"ColorSpace": "sRGB",
+		"CreateDate": "2016:07:11 18:03:37",
+		"FNumber": "f/2.0",
+		"FocalLength": "3.8 mm",
+		"LightSource": "Unknown",
+		"ExposureMode": "Auto",
+		"SubSecTimeDigitized": "898",
+		"MaxApertureValue": "2.0",
+		"SceneCaptureType": "Standard",
+		"SubSecTimeOriginal": "898",
+		"DigitalZoomRatio": "1",
+		"Saturation": "Normal",
+		"ExposureProgram": "Program AE",
+		"Sharpness": "Normal",
+		"WhiteBalance": "Auto",
+		"SubSecTime": "898",
+		"MeteringMode": "Center-weighted average",
+		"DateTimeOriginal": "2016:07:11 18:03:37",
+		"GainControl": "None",
+		"SubjectDistance": "0 m",
+		"Flash": "No Flash",
+		"Contrast": "Normal",
+		"ExposureCompensation": "0 EV",
+		"BrightnessValue": "undef",
+		"ISO": "50",
+		"ExposureTime": "0.001 sec (1/714)",
+		"Compression": "JPEG (old-style)"
+	},
+	"groups": [
+
+	],
+	"albums": [
+		{
+			"id": "72157669084548603",
+			"title": "#livingDanang 2016",
+			"url": "https://www.flickr.com/photos/tiendathoang/sets/72157669084548603/"
+		}
+	],
+	"tags": [
+
+	],
+	"people": [
+
+	],
+	"notes": [
+
+	],
+	"privacy": "public",
+	"comment_permissions": "any flickr member",
+	"tagging_permissions": "people you follow",
+	"safety": "safe",
+	"comments": [
+
+	],
+	"geo": {
+		"latitude": "16073799",
+		"longitude": "108224730",
+		"accuracy": "16"
+	}
+}

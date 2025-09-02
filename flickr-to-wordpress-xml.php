@@ -236,7 +236,7 @@ XML;
         $attachmentId = $this->postIdCounter++;
         
         $postTitle = $photo['name'] ?: "Photo taken at " . $photo['date_taken'];
-        $postSlug = $this->generateSlug($postTitle . '-' . $photo['id']);
+        $postSlug = $this->generateSlug($postTitle);
         
         $postContent = $this->generatePostContent($photo);
         $postDate = $this->formatDate($photo['date_imported'] ?: $photo['date_taken']);
@@ -304,7 +304,7 @@ XML;
     
     private function writeAttachment(int $attachmentId, array $photo, int $parentId, string $postDate, string $postDateGMT): void
     {
-        $attachmentSlug = $this->generateSlug($photo['name'] . '-' . $photo['id']);
+        $attachmentSlug = $this->generateSlug($photo['name'] ?: 'photo-' . $photo['id']);
         $attachmentTitle = $photo['name'] ?: "Photo " . $photo['id'];
         $attachmentUrl = $photo['original'];
         
@@ -373,10 +373,67 @@ XML;
     
     private function generateSlug(string $text): string
     {
-        $slug = strtolower($text);
-        $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
-        $slug = preg_replace('/[\s-]+/', '-', $slug);
-        return trim($slug, '-');
+        // Strip HTML tags
+        $text = strip_tags($text);
+        
+        // Remove accents and convert to ASCII (simplified version of WordPress remove_accents)
+        $text = $this->removeAccents($text);
+        
+        // Convert to lowercase
+        $text = strtolower($text);
+        
+        // Replace common HTML entities and special chars with hyphens
+        $text = str_replace(['&nbsp;', '&#160;', '&ndash;', '&#8211;', '&mdash;', '&#8212;'], '-', $text);
+        $text = str_replace('/', '-', $text);
+        
+        // Remove non-alphanumeric characters except spaces and hyphens
+        $text = preg_replace('/[^a-z0-9\s-]/', '', $text);
+        
+        // Replace multiple spaces/hyphens with single hyphen
+        $text = preg_replace('/[\s-]+/', '-', $text);
+        
+        // Trim hyphens from start and end
+        return trim($text, '-');
+    }
+    
+    private function removeAccents(string $text): string
+    {
+        // Simplified version of WordPress remove_accents function
+        $chars = [
+            // Latin-1 Supplement
+            'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A',
+            'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a',
+            'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+            'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
+            'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I',
+            'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
+            'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O',
+            'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o',
+            'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U',
+            'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u',
+            'Ý' => 'Y', 'ý' => 'y', 'ÿ' => 'y',
+            'Ç' => 'C', 'ç' => 'c', 'Ñ' => 'N', 'ñ' => 'n',
+            // Vietnamese
+            'Ạ' => 'A', 'Ả' => 'A', 'Ấ' => 'A', 'Ầ' => 'A', 'Ẩ' => 'A', 'Ẫ' => 'A', 'Ậ' => 'A',
+            'Ắ' => 'A', 'Ằ' => 'A', 'Ẳ' => 'A', 'Ẵ' => 'A', 'Ặ' => 'A',
+            'ạ' => 'a', 'ả' => 'a', 'ấ' => 'a', 'ầ' => 'a', 'ẩ' => 'a', 'ẫ' => 'a', 'ậ' => 'a',
+            'ắ' => 'a', 'ằ' => 'a', 'ẳ' => 'a', 'ẵ' => 'a', 'ặ' => 'a',
+            'Ẹ' => 'E', 'Ẻ' => 'E', 'Ẽ' => 'E', 'Ế' => 'E', 'Ề' => 'E', 'Ể' => 'E', 'Ễ' => 'E', 'Ệ' => 'E',
+            'ẹ' => 'e', 'ẻ' => 'e', 'ẽ' => 'e', 'ế' => 'e', 'ề' => 'e', 'ể' => 'e', 'ễ' => 'e', 'ệ' => 'e',
+            'Ị' => 'I', 'Ỉ' => 'I', 'Ĩ' => 'I',
+            'ị' => 'i', 'ỉ' => 'i', 'ĩ' => 'i',
+            'Ọ' => 'O', 'Ỏ' => 'O', 'Ố' => 'O', 'Ồ' => 'O', 'Ổ' => 'O', 'Ỗ' => 'O', 'Ộ' => 'O',
+            'Ớ' => 'O', 'Ờ' => 'O', 'Ở' => 'O', 'Ỡ' => 'O', 'Ợ' => 'O',
+            'ọ' => 'o', 'ỏ' => 'o', 'ố' => 'o', 'ồ' => 'o', 'ổ' => 'o', 'ỗ' => 'o', 'ộ' => 'o',
+            'ớ' => 'o', 'ờ' => 'o', 'ở' => 'o', 'ỡ' => 'o', 'ợ' => 'o',
+            'Ụ' => 'U', 'Ủ' => 'U', 'Ũ' => 'U', 'Ư' => 'U', 'Ứ' => 'U', 'Ừ' => 'U', 'Ử' => 'U', 'Ữ' => 'U', 'Ự' => 'U',
+            'ụ' => 'u', 'ủ' => 'u', 'ũ' => 'u', 'ư' => 'u', 'ứ' => 'u', 'ừ' => 'u', 'ử' => 'u', 'ữ' => 'u', 'ự' => 'u',
+            'Ỳ' => 'Y', 'Ỷ' => 'Y', 'Ỹ' => 'Y', 'Ỵ' => 'Y',
+            'ỳ' => 'y', 'ỷ' => 'y', 'ỹ' => 'y', 'ỵ' => 'y',
+            'Đ' => 'D', 'đ' => 'd'
+        ];
+        
+        return strtr($text, $chars);
     }
     
     private function formatDate(string $date): string
