@@ -32,7 +32,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
     <wp:term_id>[auto-increment]</wp:term_id>
     <wp:tag_slug>[slug-from-title]</wp:tag_slug>
     <wp:tag_name><![CDATA[[album.title]]]></wp:tag_name>
-    <wp:term_description><![CDATA[[album.description]]]></wp:term_description>
+    <wp:tag_description><![CDATA[[album.description]]]></wp:tag_description>
 </wp:tag>
 ```
 

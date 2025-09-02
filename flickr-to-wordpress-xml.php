@@ -156,7 +156,7 @@ XML;
     <wp:category>
         <wp:term_id>{$flickrCategoryId}</wp:term_id>
         <wp:category_nicename><![CDATA[from-flickr]]></wp:category_nicename>
-        <wp:category_name><![CDATA[From Flickr]]></wp:category_name>
+        <wp:cat_name><![CDATA[From Flickr]]></wp:cat_name>
         <wp:category_description><![CDATA[Photos imported from Flickr]]></wp:category_description>
         <wp:category_parent><![CDATA[]]></wp:category_parent>
     </wp:category>
@@ -182,7 +182,7 @@ XML;
         <wp:term_id>{$tagId}</wp:term_id>
         <wp:tag_slug><![CDATA[{$tagSlug}]]></wp:tag_slug>
         <wp:tag_name><![CDATA[{$tagName}]]></wp:tag_name>
-        <wp:term_description><![CDATA[{$tagDescription}]]></wp:term_description>
+        <wp:tag_description><![CDATA[{$tagDescription}]]></wp:tag_description>
     </wp:tag>
 
 XML;
