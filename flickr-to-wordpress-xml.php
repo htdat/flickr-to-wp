@@ -243,7 +243,7 @@ XML;
         $postId = $this->postIdCounter++;
         $attachmentId = $this->postIdCounter++;
         
-        $postTitle = $photo['name'] ?: "Photo taken at " . $photo['date_taken'];
+        $postTitle = !empty($photo['name']) ? $photo['name'] : "Photo taken at " . $photo['date_taken'];
         $postSlug = $this->generateSlug($postTitle);
         
         $postContent = $this->generatePostContent($photo, $attachmentId);
@@ -306,8 +306,8 @@ XML;
 
     private function writeAttachment(int $attachmentId, array $photo, int $parentId, string $postDate, string $postDateGMT): void
     {
-        $attachmentSlug = $this->generateSlug($photo['name'] ?: 'photo-' . $photo['id']);
-        $attachmentTitle = $photo['name'] ?: "Photo " . $photo['id'];
+        $attachmentSlug = $this->generateSlug(!empty($photo['name']) ? $photo['name'] : 'photo-' . $photo['id']);
+        $attachmentTitle = !empty($photo['name']) ? $photo['name'] : "Photo " . $photo['id'];
         $attachmentUrl = $photo['original'];
         
         $exifData = $this->formatEXIFData($photo['exif'] ?? []);
