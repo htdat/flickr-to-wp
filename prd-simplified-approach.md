@@ -68,7 +68,9 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
     
     <!-- Tag assignments -->
     <category domain="post_tag" nicename="[tag-slug]"><![CDATA[[tag-name]]]></category>
-    <category domain="post_tag" nicename="flickr-to-wp"><![CDATA[flickr-to-wp]]></category>
+    
+    <!-- Category assignment -->
+    <category domain="category" nicename="from-flickr"><![CDATA[From Flickr]]></category>
     
     <!-- Featured image reference -->
     <wp:postmeta>
