@@ -170,6 +170,8 @@ php flickr-to-wordpress-xml.php \
     --output=/path/to/flickr-export.xml \
     [--site-url=https://example.com] \
     [--author=admin] \
+    [--start-post-id=10000] \
+    [--start-term-id=10000] \
     [--dry-run] \
     [--verbose]
 ```
@@ -179,6 +181,8 @@ php flickr-to-wordpress-xml.php \
 - **`--output`** (required): Output XML file path
 - **`--site-url`** (optional): Base URL for generating permalinks (default: https://example.com)
 - **`--author`** (optional): WordPress author username (default: admin)
+- **`--start-post-id`** (optional): Starting ID for posts and attachments (default: 10000)
+- **`--start-term-id`** (optional): Starting ID for tags and categories (default: 10000)
 - **`--dry-run`** (optional): Generate XML without writing file, show statistics
 - **`--verbose`** (optional): Show detailed processing information
 
@@ -209,9 +213,10 @@ php flickr-to-wordpress-xml.php \
 - `<wp:base_site_url>` and `<wp:base_blog_url>`
 
 **ID Management:**
-- Auto-increment post IDs starting from 1
-- Auto-increment term IDs starting from 1
+- Auto-increment post IDs starting from configurable value (default: 10000)
+- Auto-increment term IDs starting from configurable value (default: 10000)
 - Maintain ID relationships between posts and attachments
+- Use `--start-post-id` and `--start-term-id` to avoid conflicts with existing WordPress content
 
 ## User Import Workflow
 
@@ -221,6 +226,17 @@ php flickr-to-wordpress-xml.php \
     --json-dir=./flickr-data/json \
     --output=./flickr-import.xml \
     --site-url=https://mysite.com
+```
+
+**Advanced Usage:**
+```bash
+# Specify custom starting IDs to avoid conflicts with existing content
+php flickr-to-wordpress-xml.php \
+    --json-dir=./flickr-data/json \
+    --output=./flickr-import.xml \
+    --site-url=https://mysite.com \
+    --start-post-id=50000 \
+    --start-term-id=1000
 ```
 
 ### Step 2: Review XML (Optional)

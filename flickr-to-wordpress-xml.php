@@ -15,8 +15,8 @@ declare(strict_types=1);
 class FlickrToWordPressXMLExporter
 {
     private array $options = [];
-    private int $postIdCounter = 1;
-    private int $termIdCounter = 1;
+    private int $postIdCounter = 10000;
+    private int $termIdCounter = 10000;
     private array $albumTagMap = [];
     private $xmlFile;
     
@@ -26,10 +26,16 @@ class FlickrToWordPressXMLExporter
             'site-url' => 'https://example.com',
             'author' => 'admin',
             'dry-run' => false,
-            'verbose' => false
+            'verbose' => false,
+            'start-post-id' => 10000,
+            'start-term-id' => 10000
         ], $options);
         
         $this->validateOptions();
+        
+        // Set ID counters based on options
+        $this->postIdCounter = (int)$this->options['start-post-id'];
+        $this->termIdCounter = (int)$this->options['start-term-id'];
     }
     
     private function validateOptions(): void
@@ -565,6 +571,8 @@ Required Options:
 Optional Options:
   --site-url=URL       Base URL for permalinks (default: https://example.com)
   --author=USER        WordPress author username (default: admin)
+  --start-post-id=NUM  Starting ID for posts and attachments (default: 10000)
+  --start-term-id=NUM  Starting ID for tags and categories (default: 10000)
   --dry-run           Generate XML without writing file, show statistics
   --verbose           Show detailed processing information
   --help              Show this help message
@@ -573,6 +581,7 @@ Examples:
   php flickr-to-wordpress-xml.php --json-dir=./flickr-data/json --output=./flickr-import.xml
   php flickr-to-wordpress-xml.php --json-dir=./flickr-data/json --output=./flickr-import.xml --site-url=https://mysite.com --verbose
   php flickr-to-wordpress-xml.php --json-dir=./flickr-data/json --output=./test.xml --dry-run
+  php flickr-to-wordpress-xml.php --json-dir=./flickr-data/json --output=./flickr-import.xml --start-post-id=1000 --start-term-id=500
 
 HELP;
 }
