@@ -1,5 +1,7 @@
 # Convert Flick photos and albums to WordPress content 
 
+> ⚠️This is the original idea but then I changed to the simplified approach by generating WordPress XML Export file.
+
 ## Project Description 
 
 The project converts the downloaded data from Flick to WordPress content, focusing on photos and albums. 
