@@ -75,7 +75,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
 ```
 
 **Post Data Mapping:**
-- **Post Title:** Use photo `name` field, fallback to "Photo taken at [date_taken]"
+- **Post Title:** Use photo `name` field (if not empty or whitespace-only), fallback to "Photo taken at [date_taken]"
 - **Post Content:** WordPress Gutenberg blocks format including:
   - **Image block:** Reference the attachment using its ID with photo description as caption
   - **Paragraph blocks:** For photo description, date taken, and original Flickr URL
