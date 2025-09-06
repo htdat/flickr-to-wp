@@ -332,3 +332,102 @@ project/
 - **Geolocation:** Convert GPS data to WordPress location plugins
 - **Multi-author support:** Map Flickr photos to different WordPress authors
 - **Content filtering:** Rules to skip certain photos or albums during generation
+
+## Auto-Testing Strategy
+
+### Testing Approach Overview
+**Simple PHP Test Script** that validates the complete XML generation workflow using existing sample data and the main exporter script.
+
+### Test Infrastructure
+- **Single test script:** `tests/run-tests.php` - no external dependencies
+- **Sample data:** Uses existing `tests/sample/` directory with real Flickr JSON files
+- **XML validation:** Parse generated XML with PHP's built-in XML functions
+- **Output verification:** Direct comparison against PRD specifications
+
+### Test Workflow
+```bash
+# Single command execution
+php tests/run-tests.php
+```
+
+**Internal Process:**
+1. **Generate XML** using existing `flickr-to-wordpress-xml.php` with sample data
+2. **Parse XML** using PHP's `simplexml_load_file()` 
+3. **Run validation checks** against PRD requirements
+4. **Report results** with ✓/❌ status for each validation point
+
+### Sample Data Coverage
+The test uses existing sample data in `tests/sample/`:
+- **3 albums** (including special characters: `#aBitHiddenIsland`, `#livingDanang 2016`, HTML entities)
+- **8 photo files** with varying complexity:
+  - Photos with/without album assignments
+  - Rich EXIF data (GPS coordinates, camera settings)
+  - Minimal EXIF data (basic camera info)
+  - Empty vs populated description fields
+  - Special characters in photo names
+
+### Validation Points
+
+#### **XML Structure Validation**
+- ✓ Valid XML format with proper WordPress WXR namespaces
+- ✓ Required channel elements present (`wp:wxr_version`, author, etc.)
+- ✓ Proper CDATA usage for text content
+
+#### **Album → Tag Mapping**
+- ✓ **3 album tags** created from sample albums
+- ✓ **Tag names:** Preserve special characters (`#aBitHiddenIsland`, `#livingDanang 2016`)
+- ✓ **Tag slugs:** Proper generation (`abithiddenisland`, `livingdanang-2016`)
+- ✓ **Tag descriptions:** HTML entity handling (`&quot;` properly processed)
+
+#### **Photo → Post + Attachment**
+- ✓ **8 posts** created with correct WordPress structure
+- ✓ **8 attachments** linked to respective posts
+- ✓ **Post titles:** Use photo `name` field or fallback to "Photo taken at [date]"
+- ✓ **Post status:** All posts set to `private` for review
+- ✓ **Date handling:** Use `date_imported` over `date_taken` when available
+
+#### **Content Structure Validation**
+- ✓ **WordPress Gutenberg blocks:** Proper `<!-- wp:image -->` format
+- ✓ **Image blocks:** Correct attachment ID references and image URLs
+- ✓ **Caption handling:** Photo descriptions in `<figcaption>` elements
+- ✓ **Metadata paragraphs:** "Taken on" and "Originally from" blocks present
+- ✓ **EXIF formatting:** `flickr_exif_data:` with bullet points
+
+#### **Relationship Validation**
+- ✓ **Album assignments:** Photos correctly tagged with their album tags
+- ✓ **Attachment-post relationships:** `wp:post_parent` correctly set
+- ✓ **ID sequencing:** No duplicate IDs, proper auto-increment
+- ✓ **Category assignment:** All posts have "From Flickr" category
+
+#### **Data Integrity Checks**
+- ✓ **Original URLs:** All attachments reference correct Flickr URLs
+- ✓ **EXIF data presence:** Rich EXIF formatted correctly, empty EXIF handled
+- ✓ **Special character handling:** Proper encoding throughout XML
+- ✓ **Album-photo relationships:** Photos appear in correct album tags
+
+### Expected Test Results
+```
+✓ XML generation successful
+✓ Found 3 album tags with correct names and slugs
+✓ Found 8 posts + 8 attachments (16 total items)
+✓ WordPress Gutenberg blocks properly formatted
+✓ EXIF data correctly structured with bullet points
+✓ Album-photo relationships maintained
+✓ All posts assigned "From Flickr" category
+✓ Attachment URLs reference original Flickr images
+✓ Date handling follows PRD priority (date_imported > date_taken)
+✓ Special characters preserved in titles and descriptions
+```
+
+### Benefits
+- **PRD Compliance:** Direct validation against documented specifications
+- **Regression Testing:** Catch changes that break expected behavior  
+- **Quality Assurance:** Verify XML before WordPress import
+- **Development Confidence:** Rapid feedback during implementation changes
+- **Documentation:** Test results serve as working examples of expected output
+
+### Test Execution Context
+- **No dependencies:** Pure PHP with built-in XML functions
+- **Fast execution:** Complete test run in under 10 seconds
+- **Deterministic:** Same input data produces consistent, verifiable results
+- **Comprehensive:** Validates complete workflow from JSON to WordPress-ready XML
