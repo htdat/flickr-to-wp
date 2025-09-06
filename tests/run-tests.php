@@ -219,8 +219,9 @@ class FlickrXMLTest
                 return 'Post missing required elements';
             }
             
+            // Default test uses private status, check for that
             if ((string)$wp->status !== 'private') {
-                return 'Posts should have private status';
+                return 'Posts should have private status (default)';
             }
         }
         

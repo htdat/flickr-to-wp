@@ -59,7 +59,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
     <wp:comment_status><![CDATA[open]]></wp:comment_status>
     <wp:ping_status><![CDATA[open]]></wp:ping_status>
     <wp:post_name><![CDATA[[post-slug]]]></wp:post_name>
-    <wp:status><![CDATA[private]]></wp:status>
+    <wp:status><![CDATA[[configurable: publish|draft|pending|private]]]></wp:status>
     <wp:post_parent>0</wp:post_parent>
     <wp:menu_order>0</wp:menu_order>
     <wp:post_type><![CDATA[post]]></wp:post_type>
@@ -98,7 +98,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
 <!-- /wp:paragraph -->]]></content:encoded>
 ```
 - **Post Date:** Use `date_imported` (actual Flickr publication date), fallback to `date_taken`
-- **Post Status:** `private` (allows admin review before publishing)
+- **Post Status:** Configurable via `--post-status` option: `publish`, `draft`, `pending`, or `private` (default: `private` for admin review)
 - **Post Slug:** Generate from title or photo ID
 - **No Featured Image:** Image is embedded in content, not as featured image
 
@@ -170,6 +170,7 @@ php flickr-to-wordpress-xml.php \
     --output=/path/to/flickr-export.xml \
     [--site-url=https://example.com] \
     [--author=admin] \
+    [--post-status=private] \
     [--start-post-id=10000] \
     [--start-term-id=10000] \
     [--dry-run] \
@@ -181,6 +182,7 @@ php flickr-to-wordpress-xml.php \
 - **`--output`** (required): Output XML file path
 - **`--site-url`** (optional): Base URL for generating permalinks (default: https://example.com)
 - **`--author`** (optional): WordPress author username (default: admin)
+- **`--post-status`** (optional): Post status for imported photos. Valid values: `publish`, `draft`, `pending`, `private` (default: private)
 - **`--start-post-id`** (optional): Starting ID for posts and attachments (default: 10000)
 - **`--start-term-id`** (optional): Starting ID for tags and categories (default: 10000)
 - **`--dry-run`** (optional): Generate XML without writing file, show statistics
@@ -257,7 +259,7 @@ php flickr-to-wordpress-xml.php \
 8. **Run the import**
 
 ### Step 4: Verification
-- Check that posts were created with correct dates and `private` status
+- Check that posts were created with correct dates and specified status
 - Verify images are embedded in post content as WordPress blocks
 - Confirm attachments were created and linked properly
 - Confirm tags were created and assigned
@@ -383,7 +385,7 @@ The test uses existing sample data in `tests/sample/`:
 - ✓ **8 posts** created with correct WordPress structure
 - ✓ **8 attachments** linked to respective posts
 - ✓ **Post titles:** Use photo `name` field or fallback to "Photo taken at [date]"
-- ✓ **Post status:** All posts set to `private` for review
+- ✓ **Post status:** All posts set to specified status (default: `private` for review)
 - ✓ **Date handling:** Use `date_imported` over `date_taken` when available
 
 #### **Content Structure Validation**

@@ -18,7 +18,7 @@ php tests/run-tests.php
 ## 📋 What This Does
 
 - **Albums → WordPress Tags**: Your Flickr albums become searchable tags
-- **Photos → WordPress Posts**: Each photo becomes a private post for review
+- **Photos → WordPress Posts**: Each photo becomes a post with configurable status
 - **EXIF Data**: Camera settings preserved in attachment metadata  
 - **Gutenberg Blocks**: Modern WordPress block format for images and content
 - **Original URLs**: WordPress downloads images during import (no local files needed)
@@ -51,6 +51,7 @@ php flickr-to-wordpress-xml.php \
     --output=./my-photos.xml \
     --site-url=https://myblog.com \
     --author=admin \
+    --post-status=draft \
     --start-post-id=20000 \
     --verbose
 ```
@@ -60,6 +61,7 @@ php flickr-to-wordpress-xml.php \
 - `--output` (required): Output XML file path  
 - `--site-url`: Your WordPress site URL (default: https://example.com)
 - `--author`: WordPress author username (default: admin)
+- `--post-status`: Post status: `publish`, `draft`, `pending`, `private` (default: private)
 - `--start-post-id`: Starting ID for posts/attachments (default: 10000)
 - `--start-term-id`: Starting ID for tags/categories (default: 10000)
 - `--dry-run`: Preview without creating files
@@ -86,7 +88,7 @@ See [WP-CLI Import documentation](https://developer.wordpress.org/cli/commands/i
 7. Run the import
 
 ### 4. Review & Publish
-- All posts are created as **Private** for your review
+- Posts are created with your specified status (default: **Private** for review)
 - Check that images loaded correctly
 - Verify album tags were created  
 - Publish posts when ready
@@ -129,7 +131,7 @@ flickr-data/
 ### Photos → WordPress Posts + Attachments
 - **Post Title**: Photo name or "Photo taken at [date]"
 - **Post Content**: Gutenberg image block + metadata paragraphs
-- **Post Status**: Private (for review)
+- **Post Status**: Configurable (default: Private for review)
 - **Category**: "From Flickr" 
 - **Tags**: Assigned album tags
 - **Attachment**: Original Flickr image URL for WordPress to download

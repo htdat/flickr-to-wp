@@ -25,6 +25,7 @@ class FlickrToWordPressXMLExporter
         $this->options = array_merge([
             'site-url' => 'https://example.com',
             'author' => 'admin',
+            'post-status' => 'private',
             'dry-run' => false,
             'verbose' => false,
             'start-post-id' => 10000,
@@ -50,6 +51,12 @@ class FlickrToWordPressXMLExporter
         
         if (!$this->options['dry-run'] && !is_writable(dirname($this->options['output']))) {
             throw new InvalidArgumentException('Output directory must be writable');
+        }
+        
+        // Validate post status
+        $validStatuses = ['publish', 'draft', 'pending', 'private'];
+        if (!in_array($this->options['post-status'], $validStatuses)) {
+            throw new InvalidArgumentException('--post-status must be one of: ' . implode(', ', $validStatuses));
         }
     }
     
@@ -275,7 +282,7 @@ XML;
         <wp:comment_status><![CDATA[open]]></wp:comment_status>
         <wp:ping_status><![CDATA[open]]></wp:ping_status>
         <wp:post_name><![CDATA[{$postSlug}]]></wp:post_name>
-        <wp:status><![CDATA[private]]></wp:status>
+        <wp:status><![CDATA[{$this->options['post-status']}]]></wp:status>
         <wp:post_parent>0</wp:post_parent>
         <wp:menu_order>0</wp:menu_order>
         <wp:post_type><![CDATA[post]]></wp:post_type>
@@ -571,6 +578,7 @@ Required Options:
 Optional Options:
   --site-url=URL       Base URL for permalinks (default: https://example.com)
   --author=USER        WordPress author username (default: admin)
+  --post-status=STATUS Post status: publish, draft, pending, private (default: private)
   --start-post-id=NUM  Starting ID for posts and attachments (default: 10000)
   --start-term-id=NUM  Starting ID for tags and categories (default: 10000)
   --dry-run           Generate XML without writing file, show statistics
