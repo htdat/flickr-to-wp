@@ -399,26 +399,15 @@ class FlickrXMLTest
     private function testEXIFFormatting(SimpleXMLElement $xml): bool|string
     {
         $attachments = $xml->xpath('//item[wp:post_type="attachment"]');
-        $foundEXIFData = false;
         
+        // Default test behavior: EXIF should be excluded (empty descriptions)
         foreach ($attachments as $attachment) {
             $description = (string)$attachment->description;
             
+            // With default --include-exif=false, all descriptions should be empty
             if (!empty($description)) {
-                if (!str_starts_with($description, 'flickr_exif_data:')) {
-                    return 'EXIF data should start with "flickr_exif_data:"';
-                }
-                
-                if (!str_contains($description, '•')) {
-                    return 'EXIF data should contain bullet points';
-                }
-                
-                $foundEXIFData = true;
+                return 'EXIF data should be excluded by default (found: ' . substr($description, 0, 50) . '...)';
             }
-        }
-        
-        if (!$foundEXIFData) {
-            return 'No EXIF data found in any attachment';
         }
         
         return true;

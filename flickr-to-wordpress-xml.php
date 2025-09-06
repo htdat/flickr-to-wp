@@ -26,6 +26,7 @@ class FlickrToWordPressXMLExporter
             'site-url' => 'https://example.com',
             'author' => 'admin',
             'post-status' => 'private',
+            'include-exif' => false,
             'dry-run' => false,
             'verbose' => false,
             'start-post-id' => 10000,
@@ -317,7 +318,7 @@ XML;
         $attachmentTitle = (!empty($photo['name']) && trim($photo['name']) !== '') ? $photo['name'] : "Photo " . $photo['id'];
         $attachmentUrl = $photo['original'];
         
-        $exifData = $this->formatEXIFData($photo['exif'] ?? []);
+        $exifData = $this->options['include-exif'] ? $this->formatEXIFData($photo['exif'] ?? []) : '';
         
         $attachmentXML = <<<XML
     <item>
@@ -579,6 +580,7 @@ Optional Options:
   --site-url=URL       Base URL for permalinks (default: https://example.com)
   --author=USER        WordPress author username (default: admin)
   --post-status=STATUS Post status: publish, draft, pending, private (default: private)
+  --include-exif       Include EXIF data in attachment metadata (default: false)
   --start-post-id=NUM  Starting ID for posts and attachments (default: 10000)
   --start-term-id=NUM  Starting ID for tags and categories (default: 10000)
   --dry-run           Generate XML without writing file, show statistics

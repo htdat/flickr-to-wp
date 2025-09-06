@@ -133,7 +133,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
 
 **Attachment Data Mapping:**
 - **Title:** Photo `name` field
-- **Description:** EXIF data formatted as `flickr_exif_data:` followed by bullet points
+- **Description:** EXIF data formatted as `flickr_exif_data:` followed by bullet points (only when `--include-exif` is specified)
 - **Date:** Same as parent post
 - **Status:** `inherit` (attached to post)
 - **Attachment URL:** Original Flickr URL for WordPress to download during import
@@ -148,6 +148,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
 
 ### EXIF Data Processing
 - **Source:** Use only EXIF data from `photo_[id].json` file's `exif` field
+- **Inclusion:** Only when `--include-exif` flag is specified (default: excluded)
 - **Format:** `flickr_exif_data:` followed by bullet points
 - **Example:**
   ```
@@ -159,7 +160,7 @@ This project converts downloaded Flickr data (photos and albums) into a WordPres
   • ExposureTime: 0.013 sec (1/80)
   • FocalLength: 55 mm
   ```
-- **If no EXIF:** Skip EXIF section entirely
+- **If no EXIF or not included:** Empty attachment description
 
 ## Implementation Specifications
 
@@ -171,6 +172,7 @@ php flickr-to-wordpress-xml.php \
     [--site-url=https://example.com] \
     [--author=admin] \
     [--post-status=private] \
+    [--include-exif] \
     [--start-post-id=10000] \
     [--start-term-id=10000] \
     [--dry-run] \
@@ -183,6 +185,7 @@ php flickr-to-wordpress-xml.php \
 - **`--site-url`** (optional): Base URL for generating permalinks (default: https://example.com)
 - **`--author`** (optional): WordPress author username (default: admin)
 - **`--post-status`** (optional): Post status for imported photos. Valid values: `publish`, `draft`, `pending`, `private` (default: private)
+- **`--include-exif`** (optional): Include EXIF metadata in attachment descriptions (default: false)
 - **`--start-post-id`** (optional): Starting ID for posts and attachments (default: 10000)
 - **`--start-term-id`** (optional): Starting ID for tags and categories (default: 10000)
 - **`--dry-run`** (optional): Generate XML without writing file, show statistics

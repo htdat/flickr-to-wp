@@ -19,7 +19,7 @@ php tests/run-tests.php
 
 - **Albums → WordPress Tags**: Your Flickr albums become searchable tags
 - **Photos → WordPress Posts**: Each photo becomes a post with configurable status
-- **EXIF Data**: Camera settings preserved in attachment metadata  
+- **EXIF Data**: Camera settings optionally preserved in attachment metadata  
 - **Gutenberg Blocks**: Modern WordPress block format for images and content
 - **Original URLs**: WordPress downloads images during import (no local files needed)
 
@@ -52,6 +52,7 @@ php flickr-to-wordpress-xml.php \
     --site-url=https://myblog.com \
     --author=admin \
     --post-status=draft \
+    --include-exif \
     --start-post-id=20000 \
     --verbose
 ```
@@ -62,6 +63,7 @@ php flickr-to-wordpress-xml.php \
 - `--site-url`: Your WordPress site URL (default: https://example.com)
 - `--author`: WordPress author username (default: admin)
 - `--post-status`: Post status: `publish`, `draft`, `pending`, `private` (default: private)
+- `--include-exif`: Include EXIF camera data in attachments (default: false)
 - `--start-post-id`: Starting ID for posts/attachments (default: 10000)
 - `--start-term-id`: Starting ID for tags/categories (default: 10000)
 - `--dry-run`: Preview without creating files
@@ -137,7 +139,7 @@ flickr-data/
 - **Attachment**: Original Flickr image URL for WordPress to download
 
 ### EXIF Data
-Preserved in attachment metadata as:
+Optionally preserved in attachment metadata (when `--include-exif` is used):
 ```
 flickr_exif_data:
 • Make: Canon
