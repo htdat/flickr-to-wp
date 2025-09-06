@@ -308,7 +308,7 @@ class FlickrXMLTest
             'job-is-both-fun-and-colorful',
             'xanh-xanh-mat-mat',
             'lang-le-hoang-hon',
-            'humble-speakers',
+            'humble-speakers-wrongggg',
             'candlelit-paper-flowers-or-no-rubbish',
             'hue-it-is',
             'childhood-moment',
